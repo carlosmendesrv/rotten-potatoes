@@ -1,0 +1,12 @@
+api:
+  image: carlosmendesrv/rotten-potatoes:latest
+  serviceType: LoadBalancer
+
+mongodb:
+  tag: 4.2.8
+  #existSecret: nome do secret
+  credentials:
+    hostName: mongodb
+    userName: mongouser
+    userPassword: mongopwd
+  databaseName: admin

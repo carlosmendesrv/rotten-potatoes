@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-api-deployment
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-api
+  template: 
+    metadata:          
+      labels:
+        app: {{ .Release.Name }}-api
+    spec:            
+      containers:
+      - name: api
+        image: {{ .Values.api.image }}
+        ports:
+        - containerPort: 5000
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "32Mi"
+          limits:
+            cpu: "500m"
+            memory: "64Mi"
+        env:
+          - name: MONGODB_HOST
+            value: {{ .Values.mongodb.credentials.hostName }}
+          - name: MONGODB_USERNAME
+            value: {{ .Values.mongodb.credentials.userName }}
+          - name: MONGODB_PASSWORD
+            value: {{ .Values.mongodb.credentials.userPassword }}
+          - name: MONGODB_DB
+            value: {{ .Values.mongodb.databaseName }}
+        # envFrom:
+        #   - configMapRef:
+        #       name: {{ .Release.Name }}-api-configmap
+        # env:              
+        #   - name: MONGODB_USERNAME
+        #     valueFrom:
+        #       secretKeyRef:
+        #         key: MONGO_INITDB_ROOT_USERNAME
+        #         {{- if empty .Values.mongodb.existSecret }}
+        #         name: {{ .Release.Name }}-mongodb-secret
+        #         {{- else }}
+        #         name: {{ .Values.mongodb.existSecret }}
+        #         {{- end }}
+        #   - name: MONGODB_PASSWORD
+        #     valueFrom:
+        #       secretKeyRef:
+        #         key: MONGO_INITDB_ROOT_PASSWORD
+        #         {{- if empty .Values.mongodb.existSecret }}
+        #         name: {{ .Release.Name }}-mongodb-secret
+        #         {{- else }}
+        #         name: {{ .Values.mongodb.existSecret }}
+        #         {{- end }}
