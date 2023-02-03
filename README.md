@@ -5,15 +5,21 @@ Rotten potatoes - KubeDev
 * Node JS
 * Mongo DB
 * Docker
+* K3D
 * Kubernetes
 
 ## Build Project
-
-### Docker
+## Docker
 ```
 docker-compose up -d --build
 ```
 
+--- 
+
+## Kubernetes
+```
+k3d cluster create  -p "8080:30000@loadbalancer"
+```
 ### Helm
 ```
 helm install minhaapi ./api-produto/
